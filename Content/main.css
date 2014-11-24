@@ -1,0 +1,11 @@
+﻿.bold {
+    font-weight:bold;
+}
+div.form-group div.select2-container.ng-invalid {
+    border-color: red;
+    border-width: 1px;
+    border-style: solid;
+}
+.form-item-invalid {
+    color: red;
+}
