@@ -32,7 +32,6 @@
                     }
                     , Gender: {
                         required: true
-                        //,'required-msg': 'Gender is required.'
                     }
                     , State: {
                         required: true
