@@ -28,14 +28,14 @@
             aaCustomProvider.initProvider();
         }])
         .config(['$stateProvider', function ($stateProvider) {
-            $stateProvider.state('landing', {
-                url: '',
-                templateUrl: 'features/landing/landing.html'
-            });
             $stateProvider.state('aatest', {
-                url: 'aatest',
-                templateUrl: 'features/angularAgilityTest/angularAgilityTest.html',
-                controller: 'angularAgilityTestController'
+                url: '',
+                views: {
+                    'content@': {
+                        templateUrl: 'features/angularAgilityTest/angularAgilityTest.html',
+                        controller: 'angularAgilityTestController'
+                    }
+                }
             });
         }]);
 })();
