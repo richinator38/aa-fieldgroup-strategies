@@ -145,8 +145,16 @@
                     var firstSpan = ' <span ng-if="$first">{{opt.name}}</span>';
                     $(element).after(angular.element(firstSpan));
 
+                    var name = element.attr('name');
                     var requiredMsg = element.attr('required-msg');
-                    var isRequired = !angular.isUndefined(requiredMsg) && requiredMsg.length > 0;
+                    var required = element.attr('required');
+                    var ngrequired = element.attr('ng-required');
+                    var isRequired = (!angular.isUndefined(requiredMsg) && requiredMsg.length > 0) ||
+                        (!angular.isUndefined(required) && required.length > 0) ||
+                        (!angular.isUndefined(ngrequired) && ngrequired.length > 0);
+                    if (isRequired && angular.isUndefined(requiredMsg) || requiredMsg.length == 0) {
+                        requiredMsg = name + ' is required.';
+                    }
                     var reqdText = isRequired ? 'required required-msg="' + requiredMsg + '"' : '';
 
                     var secondInput = '<input type="radio" name=' + element.attr('name') + ' ng-if="!$first" ng-change="activate(opt, $event)" ng-model="' + element.attr('aa-field') + '" ng-value="opt.id" ' + reqdText + ' /> <span ng-if="!$first">{{opt.name}}</span>';

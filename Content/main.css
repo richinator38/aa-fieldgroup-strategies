@@ -9,3 +9,6 @@ div.form-group div.select2-container.ng-invalid {
 .form-item-invalid {
     color: red;
 }
+input.ng-invalid {
+  border: 1px solid red;
+}

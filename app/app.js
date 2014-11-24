@@ -3,6 +3,8 @@
 
     angular.module('app', [
         // Angular modules 
+        'ngAnimate',
+        'ngSanitize',
 
         // Custom modules 
 

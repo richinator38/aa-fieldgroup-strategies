@@ -32,9 +32,14 @@
                     }
                     , Gender: {
                         required: true
+                        //,'required-msg': 'Gender is required.'
                     }
                     , State: {
                         required: true
+                    }
+                    , Street: {
+                        'ng-minlength': 3,
+                        'ng-maxlength': 25
                     }
                 }
             }

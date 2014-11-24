@@ -7,17 +7,15 @@
             <input aa-field-group="model.Name" />
             <input aa-field-group="model.BirthDate" aa-field-group-strategy="datePicker" />
             <input aa-field-group="model.Email" type="email" />
-            <input aa-field-group="model.Email2" type="email" />
+            <input aa-field-group="model.Street" />
             <input aa-field-group="model.IsActive" aa-field-group-strategy="checkBox" />
         </div>
         <div class="col-sm-6">
             <input aa-field-group="model.Salary" aa-field-group-strategy="currency" />
-            <input aa-field-group="model.Street" />
             <input aa-field-group="model.State" aa-field-group-strategy="select2" config="stateSingleConfig" />
             <input aa-field-group="model.Gender" aa-field-group-strategy="radio" options="radioList" />
             <input aa-field-group="model.FavoriteNumber" type="number" />
         </div>
     </div>
     <button aa-submit-form="submit()" type="submit" class="btn btn-primary">Submit</button>
-    <a ui-sref="landing" class="btn btn-warning">Cancel</a>
 </div>
