@@ -1,0 +1,45 @@
+﻿@import "bootstrap/mixins/grid.less";
+@import "bootstrap/variables.less";
+
+.form-left-col {
+    @media (min-width: @screen-sm-min) {
+        .make-sm-column(6);
+    }
+}
+.form-right-col {
+    @media (min-width: @screen-sm-min) {
+        .make-sm-column(6);
+    }
+}
+.form-label {
+    @media (min-width: @screen-sm-min) {
+        .make-sm-column(5);
+    }
+    @media (min-width: @screen-md-min) {
+        .make-md-column(4);
+    }
+}
+.form-input {
+    @media (min-width: @screen-sm-min) {
+        .make-sm-column(7);
+    }
+    @media (min-width: @screen-md-min) {
+        .make-md-column(8);
+    }
+}
+/*
+    If you want to show red around items before submit is clicked, uncomment this section.
+div.form-group div.select2-container.ng-invalid {
+  border-color: red;
+  border-width: 1px;
+  border-style: solid;
+}
+input.ng-invalid {
+  border: 1px solid red;
+}*/
+.form-item-invalid {
+    color: red;
+}
+.bold {
+    font-weight: bold;
+}

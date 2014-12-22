@@ -1,7 +1,5 @@
-# aa-fieldgroup-strategies
-
-## Custom field group strategies for [Angular Agility](https://github.com/AngularAgility/AngularAgility)
-
+# Custom field group strategies for [Angular Agility](https://github.com/AngularAgility/AngularAgility)
+The following are new field group strategies for the Angular Agility project:
 - Checkbox
 - Currency
 - Datepicker

@@ -8,10 +8,6 @@
     aaSelectTwo.$inject = [];
     
     function aaSelectTwo () {
-        // Usage:
-        //     <input aa-select2>
-        // Creates:
-        // 
         var directive = {
             link: postLink,
             restrict: 'A',
