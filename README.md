@@ -3,13 +3,14 @@
 ## Custom field group strategies for [Angular Agility](https://github.com/AngularAgility/AngularAgility)
 
 - Checkbox
-- Currency control
+- Currency
 - Datepicker
 - Percent
-- Radio button group
+- Radio button group (one line of HTML)
 - Select2
 
 All are integrated with [Angular Agility's validation](http://angularagility.herokuapp.com/#/formExtensions/formExtensions/basic).
+All except for Select2 are based on [Angular UI Bootstrap](http://angular-ui.github.io/bootstrap/)
 
 ##Plunker
 Sample [Plunker](http://plnkr.co/edit/rLe4N3IIsvYQupFPHR24?p=preview)
