@@ -18,7 +18,7 @@
             return {
                 pre: preLink,
                 post: postLink
-            }
+            };
         }
 
         function preLink(scope, iElem, iAttrs) {

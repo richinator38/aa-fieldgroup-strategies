@@ -47,7 +47,7 @@
                     }
 
                     element.closest('.form-group').prepend(label);
-                }
+                };
             }
 
             function getColOrClass(element, colAttr, classAttr, defaultClass) {
@@ -183,7 +183,7 @@
                     var isRequired = (!angular.isUndefined(requiredMsg) && requiredMsg.length > 0) ||
                         (!angular.isUndefined(required) && required.length > 0) ||
                         (!angular.isUndefined(ngrequired) && ngrequired.length > 0);
-                    if (isRequired && angular.isUndefined(requiredMsg) || requiredMsg.length == 0) {
+                    if (isRequired && (angular.isUndefined(requiredMsg) || requiredMsg.length === 0)) {
                         requiredMsg = name + ' is required.';
                     }
 
@@ -219,7 +219,7 @@
 
                     var child = wrapperDiv.firstChild.cloneNode(true);
                     var inputElement = $(child).find('input');
-                    if (angular.isUndefined(inputElement) || inputElement.length == 0) {
+                    if (angular.isUndefined(inputElement) || inputElement.length === 0) {
                         throw Error('>> input element required for field group strategy.');
                     }
 
