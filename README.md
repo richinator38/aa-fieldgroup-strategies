@@ -12,10 +12,21 @@
 All are integrated with [Angular Agility's validation](http://angularagility.herokuapp.com/#/formExtensions/formExtensions/basic).
 All except for Select2 are based on [Angular UI Bootstrap](http://angular-ui.github.io/bootstrap/)
 
-##Plunker
-Sample [Plunker](http://plnkr.co/edit/rLe4N3IIsvYQupFPHR24?p=preview)
+##Demo
+- Sample [Plunker](http://plnkr.co/edit/rLe4N3IIsvYQupFPHR24?p=preview)
 
 ##Usage
+###app.js
+```javascript
+angular.module('app', [
+        'ui.bootstrap',
+        'aa.formExtensions',
+        'aa.formExternalConfiguration',
+        'aaCustomFGS',
+        'aa.notify',
+        'aa.select2'
+    ]);
+```
 ###Checkbox
     <input aa-field-group="model.IsActive" aa-field-group-strategy="checkBox" />
 ###Currency
