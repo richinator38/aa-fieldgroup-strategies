@@ -2,13 +2,10 @@
     'use strict';
 
     angular
-        .module('app')
+        .module('aaCustomFGS')
         .directive('aaCheckbox', aaCheckbox);
 
     function aaCheckbox () {
-        // Usage:
-        //     <input aa-checkbox />
-        //
         var directive = {
             compile: compileFn,
             restrict: 'A',
@@ -28,7 +25,6 @@
         }
 
         function postLink(scope, element, attrs) {
-            //element.removeAttr('aa-field-group-strategy');
             var lblText = element.attr('aa-label');
             element.removeAttr('aa-label');
             element.removeClass('form-control');

@@ -27,6 +27,7 @@
                         max: 100
                     }
                     , Salary: {
+                        required: true,
                         'ng-pattern': '/^(\\d+\\.?\\d*|\\.\\d+)$/',
                         'ng-pattern-msg': 'Salary must be a decimal number'
                     }
@@ -39,6 +40,11 @@
                     , Street: {
                         'ng-minlength': 3,
                         'ng-maxlength': 25
+                    }
+                    , Percentage: {
+                        required: true,
+                        'ng-pattern': '/^[0-9]*$/',
+                        'ng-pattern-msg': 'Percentage must be an integer'
                     }
                 }
             }

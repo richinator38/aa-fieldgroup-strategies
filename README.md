@@ -1,12 +1,14 @@
-aa-fieldgroup-strategies
+# aa-fieldgroup-strategies
 ========================
 
-Custom field group strategies for Angular Agility
+## Custom field group strategies for [Angular Agility](https://github.com/AngularAgility/AngularAgility)
 
+- Checkbox
+- Currency control
+- Datepicker
+- Percent
 - Radio button group
 - Select2
-- Datepicker
-- Currency control
-- Checkbox
 
-All are integrated with Angular Agility's validation.
+All are integrated with [Angular Agility's validation](http://angularagility.herokuapp.com/#/formExtensions/formExtensions/basic).
+

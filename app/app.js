@@ -11,7 +11,7 @@
         'ui.bootstrap',
         'aa.formExtensions',
         'aa.formExternalConfiguration',
-        'aaCustomProviders',
+        'aaCustomFGS',
         'aa.notify',
         'aa.select2'
     ])

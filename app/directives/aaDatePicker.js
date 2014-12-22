@@ -2,21 +2,17 @@
     'use strict';
 
     angular
-        .module('app')
+        .module('aaCustomFGS')
         .directive('aaDatePicker', aaDatePicker);
 
-    aaDatePicker.$inject = ['$rootScope', '$compile'];
+    aaDatePicker.$inject = ['$compile'];
     
-    function aaDatePicker($rootScope, $compile) {
-        // Usage:
-        //     <input aa-date-picker />
-        // Creates:
-        // 
+    function aaDatePicker($compile) {
         var directive = {
             link: link,
             priority: 900,
             restrict: 'A',
-            controller: controller
+            controller: ['$scope', controller]
         };
         return directive;
 
@@ -27,8 +23,6 @@
 
                 $scope.opened = true;
             };
-
-            setLocaleOptions($scope);
         }
 
         function link(scope, element, attrs) {
@@ -40,16 +34,6 @@
             // So the datepicker ng-click works...
             var newDateBtn = $compile(datePickerBtn)(scope);
             $(element).after(datePickerBtn);
-
-            $rootScope.$on('$translateChangeSuccess', function () {
-                setLocaleOptions(scope);
-            });
-        }
-
-        function setLocaleOptions(scope) {
-            scope.locale = {
-                dateFormat: 'shortDate'
-            };
         }
     }
 

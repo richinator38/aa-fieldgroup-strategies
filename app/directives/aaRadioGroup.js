@@ -2,21 +2,17 @@
     'use strict';
 
     angular
-        .module('app')
+        .module('aaCustomFGS')
         .directive('aaRadioGroup', aaRadioGroup);
 
     aaRadioGroup.$inject = [];
 
     function aaRadioGroup() {
-        // Usage:
-        //     <input aa-radio-group />
-        // Creates:
-        // 
         var directive = {
             compile: compileFn,
             restrict: 'A',
             require: ['^form'],
-            controller: controllerDef,
+            controller: ['$scope', controllerDef],
             priority: 900
         };
         return directive;

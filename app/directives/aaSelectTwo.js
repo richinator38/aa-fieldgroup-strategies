@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app')
+        .module('aaCustomFGS')
         .directive('aaSelectTwo', aaSelectTwo);
 
     aaSelectTwo.$inject = [];
@@ -20,6 +20,7 @@
         return directive;
 
         function postLink(scope, element, attrs) {
+            //element.removeAttr('aa-field-group-strategy');
             element.removeAttr('config');
             element.removeAttr('translate-label');
             element.removeAttr('aa-select-two');

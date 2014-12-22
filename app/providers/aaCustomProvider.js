@@ -1,8 +1,13 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('aaCustomProviders', [])
-        .provider('aaCustom', function aaCustomProvider(aaFormExtensionsProvider, $injector) {
+    angular.module('aaCustomFGS', [
+        'aa.formExtensions',
+        'aa.formExternalConfiguration',
+        'aa.notify',
+        'aa.select2',
+        'ui.bootstrap'])
+        .provider('aaCustom', ['aaFormExtensionsProvider', '$injector', function aaCustomProvider(aaFormExtensionsProvider, $injector) {
             var service = {
             };
 
@@ -14,26 +19,22 @@
                 initSpinnerClickStrategies();
             };
 
-            function getLabelCol(element) {
-                return element.attr('aa-lbl-col') || "sm-3";
-            }
-
             function initLabelStrategies() {
-                aaFormExtensionsProvider.defaultLabelStrategy = "defaultStrategy";
-                aaFormExtensionsProvider.labelStrategies.defaultStrategy = function (element, labelText, isRequired) {
+                aaFormExtensionsProvider.defaultLabelStrategy = "customLabelStrategy";
+                aaFormExtensionsProvider.labelStrategies.customLabelStrategy = function (element, labelText, isRequired) {
                     var fgsElement = element.attr('aa-field-group-strategy');
                     if (!angular.isUndefined(fgsElement) && fgsElement.length > 0) {
-                        if (fgsElement === 'checkBox') {
+                        switch (fgsElement) {
+                            case 'checkBox':
                                 return;
                         }
                     }
 
-                    var col = getLabelCol(element);
-                    var class_ = element.attr('aa-lbl-class') || 'form-label';
+                    var colCls = getColOrClass(element, 'aa-lbl-col', 'aa-lbl-class', 'form-label');
 
                     var label = angular.element('<label>')
                       .attr('for', element[0].id)
-                      .addClass('col-' + col + ' control-label ' + class_)
+                      .addClass(colCls.col + ' control-label ' + colCls.cls)
                       .html(labelText + (isRequired ? '&nbsp;*' : ''));
 
                     var unsupported = [
@@ -45,11 +46,31 @@
                         throw new Error("Generating a label for and input type " + element[0].type + " is unsupported.");
                     }
 
-                    var formGrp = $(element).closest('.form-group');
-                    if (!angular.isUndefined(formGrp) && formGrp !== null) {
-                        formGrp.prepend(label);
-                    }
+                    element.closest('.form-group').prepend(label);
                 }
+            }
+
+            function getColOrClass(element, colAttr, classAttr, defaultClass) {
+                var col = element.attr(colAttr),
+                class_ = element.attr(classAttr);
+
+                if (!angular.isUndefined(col) && !angular.isUndefined(class_)) {
+                    col = 'col-' + col;
+                }
+                else if (!angular.isUndefined(col) && angular.isUndefined(class_)) {
+                    col = 'col-' + col;
+                    class_ = '';
+                }
+
+                if (angular.isUndefined(col) && angular.isUndefined(class_)) {
+                    class_ = defaultClass;
+                }
+
+                if (angular.isUndefined(col)) {
+                    col = '';
+                }
+
+                return { col: col, cls: class_ };
             }
 
             function initFieldGroupStrategies() {
@@ -59,6 +80,7 @@
                 initCheckboxFGS();
                 initSelect2FGS();
                 initRadioFGS();
+                initPercentFGS();
             }
 
             function commonFGSAlter(element) {
@@ -67,8 +89,8 @@
                     element.addClass('form-control');
                 }
 
-                var lblCol = getLabelCol(element);
-                var col = element.attr('aa-col') || "sm-5";
+                var colCls = getColOrClass(element, 'aa-col', 'aa-class', 'form-input');
+                var fgcls = element.attr('aa-fg-class') || '';
                 var ngshow = element.attr('ng-show') || '';
                 if (ngshow.length > 0) {
                     ngshow = 'ng-show="' + ngshow + '"';
@@ -76,17 +98,18 @@
                 var lblClass = element.attr('aa-lbl-class') || 'form-label';
 
                 return {
-                    aaCol: col,
-                    aaLblCol: lblCol,
+                    aaCol: colCls.col,
+                    aaClass: colCls.cls,
+                    aaFgClass: fgcls,
                     ngShow: ngshow,
                     lblClass: lblClass,
-                    defaultWrapper: '<div class="form-group" ' + ngshow + '><div class="col-' + col + '"><input/></div></div>'
+                    defaultWrapper: '<div class="form-group ' + fgcls + '" ' + ngshow + '><div class="' + colCls.cls + ' ' + colCls.col + '"><input/></div></div>'
                 };
             }
 
             function initDefaultFGS() {
-                aaFormExtensionsProvider.defaultFieldGroupStrategy = "defaultFGS";
-                aaFormExtensionsProvider.fieldGroupStrategies.defaultFGS = function (element) {
+                aaFormExtensionsProvider.defaultFieldGroupStrategy = "customDefault";
+                aaFormExtensionsProvider.fieldGroupStrategies.customDefault = function (element) {
                     var attrs = commonFGSAlter(element);
 
                     wrap(element, attrs.defaultWrapper);
@@ -103,6 +126,16 @@
                 };
             }
 
+            function initPercentFGS() {
+                aaFormExtensionsProvider.fieldGroupStrategies.percent = function (element) {
+                    var attrs = commonFGSAlter(element);
+
+                    element.attr('aa-percent', '');
+
+                    wrap(element, attrs.defaultWrapper);
+                };
+            }
+
             function initCheckboxFGS() {
                 aaFormExtensionsProvider.fieldGroupStrategies.checkBox = function (element) {
                     var attrs = commonFGSAlter(element);
@@ -110,8 +143,8 @@
                     element.attr('aa-checkbox', '');
                     element.attr('type', 'checkbox');
 
-                    wrap(element, '<div class="form-group" ' + attrs.ngShow + '><div class="col-' + attrs.aaLblCol + '"></div><div class="checkbox col-' +
-                        attrs.aaCol + '"><input/></div></div>');
+                    wrap(element, '<div class="form-group ' + attrs.aaFgClass + '" ' + attrs.ngShow + '><div class="' + attrs.lblClass + '"></div><div class="checkbox ' +
+                        attrs.aaClass + '"><input/></div></div>');
                 };
             }
 
@@ -127,8 +160,6 @@
                 };
             }
 
-            var rootScope;
-
             function initRadioFGS() {
                 aaFormExtensionsProvider.fieldGroupStrategies.radio = function (element) {
                     var attrs = commonFGSAlter(element);
@@ -139,7 +170,7 @@
                     element.attr('ng-change', 'activate(opt, $event)');
                     element.attr('ng-value', 'opt.id');
 
-                    wrap(element, '<div class="form-group" ' + attrs.ngShow + '><div class="radio-update col-' + attrs.aaCol + '"><label class="radio-inline" ng-repeat="opt in ' + element.attr('options') + '">' +
+                    wrap(element, '<div class="form-group ' + attrs.aaFgClass + '" ' + attrs.ngShow + '><div class="radio-update ' + attrs.aaClass + '"><label class="radio-inline" ng-repeat="opt in ' + element.attr('options') + '">' +
                         '<input/></label></div></div>');
 
                     var firstSpan = ' <span ng-if="$first">{{opt.name}}</span>';
@@ -155,6 +186,7 @@
                     if (isRequired && angular.isUndefined(requiredMsg) || requiredMsg.length == 0) {
                         requiredMsg = name + ' is required.';
                     }
+
                     var reqdText = isRequired ? 'required required-msg="' + requiredMsg + '"' : '';
 
                     var secondInput = '<input type="radio" name=' + element.attr('name') + ' ng-if="!$first" ng-change="activate(opt, $event)" ng-model="' + element.attr('aa-field') + '" ng-value="opt.id" ' + reqdText + ' /> <span ng-if="!$first">{{opt.name}}</span>';
@@ -167,7 +199,7 @@
                     var attrs = commonFGSAlter(element);
 
                     element.attr('aa-date-picker', '');
-                    element.attr('datepicker-popup', '{{locale.dateFormat}}');
+                    element.attr('datepicker-popup', 'MM/dd/yyyy');
                     element.attr('is-open', 'opened');
 
                     wrap(element, attrs.defaultWrapper);
@@ -222,9 +254,33 @@
                 };
             }
 
-            this.$get = function aaCustomFactory($rootScope) {
-                rootScope = $rootScope;
+            this.$get = function aaCustomFactory() {
                 return service;
             };
-        });
+        }])
+    .config(['aaCustomProvider', function (aaCustomProvider) {
+        aaCustomProvider.initProvider();
+    }])
+    .config(['datepickerConfig', function (datepickerConfig) {
+        datepickerConfig.showWeeks = false;
+    }])
+    .config(['datepickerPopupConfig', function (datepickerPopupConfig) {
+        datepickerPopupConfig.datepickerPopup = 'MM/dd/yyyy';
+        datepickerPopupConfig.closeText = "Close";
+    }])
+    .config(['$provide', function ($provide) {
+        // Patch - https://github.com/angular-ui/bootstrap/commit/42cc3f269bae020ba17b4dcceb4e5afaf671d49b
+        $provide.decorator('dateParser', ['$delegate', function ($delegate) {
+
+            var oldParse = $delegate.parse;
+            $delegate.parse = function (input, format) {
+                if (!angular.isString(input) || !format) {
+                    return input;
+                }
+                return oldParse.apply(this, arguments);
+            };
+
+            return $delegate;
+        }]);
+    }]);
 })();

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app')
+        .module('aaCustomFGS')
         .factory('aaSelectService', aaSelectService);
 
     aaSelectService.$inject = ['$http'];
@@ -22,8 +22,8 @@
         function getConfigSingle(config) {
             return {
                 mode: 'id',
-                id: defaultId in config ? config.id : defaultId,
-                text: defaultName in config ? config.name : defaultName,
+                id: 'id' in config ? config.id : defaultId,
+                text: 'name' in config ? config.name : defaultName,
                 options: 'options' in config ? config.options : [],
                 select2: getSelect2Options(config)
         };
@@ -32,34 +32,41 @@
         function getConfigAjaxSingle(config) {
             assertAjaxConfigParms(config, 'getConfigAjaxSingle');
 
-            return {
-                mode: 'id',
-                id: defaultId in config ? config.id : defaultId,
-                text: defaultName in config ? config.name : defaultName,
-                textLookup: function (id) {
-                    return apiGetById(id, config);
-                },
-                options: function (searchText) {
-                    return apiSearch(searchText, config);
-                },
-                select2: getSelect2Options(config)
-        };
+            var newConfig = getNewConfig(config);
+            newConfig.mode = 'id';
+            newConfig.textLookup = function (id) {
+                return apiGetById(id, newConfig);
+            };
+            newConfig.options = function (searchText) {
+                return apiSearch(searchText, newConfig);
+            };
+
+            return newConfig;
         }
 
         function getConfigAjaxMultiple(config) {
             assertAjaxConfigParms(config, 'getConfigAjaxMultiple');
 
+            var newConfig = getNewConfig(config);
+            newConfig.mode = 'tags-id';
+            newConfig.textLookup = function (id) {
+                return apiGetById(id, newConfig);
+            };
+            newConfig.options = function (searchText) {
+                return apiSearch(searchText, newConfig);
+            };
+
+            return newConfig;
+        }
+
+        function getNewConfig(config) {
             return {
-                mode: 'tags-id',
-                id: defaultId in config ? config.id : defaultId,
-                text: defaultName in config ? config.name : defaultName,
-                textLookup: function (id) {
-                    return apiGetById(id, config);
-                },
-                options: function (searchText) {
-                    return apiSearch(searchText, config);
-                },
-                select2: getSelect2Options(config)
+                id: 'id' in config ? config.id : defaultId,
+                text: 'name' in config ? config.name : defaultName,
+                select2: getSelect2Options(config),
+                apiGetMethod: 'apiGetMethod' in config ? config.apiGetMethod : undefined,
+                apiSearchMethod: 'apiSearchMethod' in config ? config.apiSearchMethod : undefined,
+                country: config.isState ? '' : undefined
             };
         }
 
@@ -74,7 +81,12 @@
 
         function apiSearch(searchText, config) {
             //search for options with AJAX
-            return $http.get('api/Lookup/' + config.apiSearchMethod, { searchText: searchText });
+            var parms = { searchText: searchText };
+            if (!angular.isUndefined(config.country)) {
+                parms.country = config.country;
+            }
+
+            return $http.get('api/Lookup/' + config.apiSearchMethod, parms);
         }
 
         function apiGetById(id, config) {
@@ -89,7 +101,7 @@
                 allowClear: 'allowClear' in config ? config.allowClear : true,
                 minimumInputLength: 'minimumInputLength' in config ? config.minimumInputLength : 0,
                 maximumInputLength: 'maximumInputLength' in config ? config.maximumInputLength : undefined,
-                placeholder: 'placeholder' in config ? config.placeholder : 'Select..'
+                placeholder: 'placeholder' in config ? config.placeholder : 'Select...'
             };
         }
     }
