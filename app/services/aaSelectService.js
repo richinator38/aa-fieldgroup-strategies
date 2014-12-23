@@ -26,7 +26,7 @@
                 text: 'name' in config ? config.name : defaultName,
                 options: 'options' in config ? config.options : [],
                 select2: getSelect2Options(config)
-        };
+            };
         }
 
         function getConfigAjaxSingle(config) {
@@ -65,8 +65,7 @@
                 text: 'name' in config ? config.name : defaultName,
                 select2: getSelect2Options(config),
                 apiGetMethod: 'apiGetMethod' in config ? config.apiGetMethod : undefined,
-                apiSearchMethod: 'apiSearchMethod' in config ? config.apiSearchMethod : undefined,
-                country: config.isState ? '' : undefined
+                apiSearchMethod: 'apiSearchMethod' in config ? config.apiSearchMethod : undefined
             };
         }
 
@@ -82,9 +81,6 @@
         function apiSearch(searchText, config) {
             //search for options with AJAX
             var parms = { searchText: searchText };
-            if (!angular.isUndefined(config.country)) {
-                parms.country = config.country;
-            }
 
             return $http.get('api/Lookup/' + config.apiSearchMethod, parms);
         }

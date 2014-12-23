@@ -7,7 +7,8 @@
         'aa.notify',
         'aa.select2',
         'ui.bootstrap'])
-        .provider('aaCustom', ['aaFormExtensionsProvider', '$injector', function aaCustomProvider(aaFormExtensionsProvider, $injector) {
+        .provider('aaCustom', ['aaFormExtensionsProvider', '$injector',
+            function aaCustomProvider(aaFormExtensionsProvider, $injector) {
             var service = {
             };
 
@@ -16,7 +17,6 @@
 
                 initLabelStrategies();
                 initFieldGroupStrategies();
-                initSpinnerClickStrategies();
             };
 
             function initLabelStrategies() {
@@ -30,7 +30,7 @@
                         }
                     }
 
-                    var colCls = getColOrClass(element, 'aa-lbl-col', 'aa-lbl-class', 'form-label');
+                    var colCls = getColOrClass(element, 'aa-lbl-col', 'aa-lbl-class', 'col-sm-2');
 
                     var label = angular.element('<label>')
                       .attr('for', element[0].id)
@@ -50,7 +50,7 @@
                 };
             }
 
-            function getColOrClass(element, colAttr, classAttr, defaultClass) {
+            function getColOrClass(element, colAttr, classAttr, defaultCol) {
                 var col = element.attr(colAttr),
                 class_ = element.attr(classAttr);
 
@@ -63,7 +63,8 @@
                 }
 
                 if (angular.isUndefined(col) && angular.isUndefined(class_)) {
-                    class_ = defaultClass;
+                    col = defaultCol;
+                    class_ = '';
                 }
 
                 if (angular.isUndefined(col)) {
@@ -89,20 +90,21 @@
                     element.addClass('form-control');
                 }
 
-                var colCls = getColOrClass(element, 'aa-col', 'aa-class', 'form-input');
+                var colCls = getColOrClass(element, 'aa-col', 'aa-class', 'col-sm-3');
                 var fgcls = element.attr('aa-fg-class') || '';
                 var ngshow = element.attr('ng-show') || '';
                 if (ngshow.length > 0) {
                     ngshow = 'ng-show="' + ngshow + '"';
                 }
-                var lblClass = element.attr('aa-lbl-class') || 'form-label';
+                var lblColCls = getColOrClass(element, 'aa-lbl-col', 'aa-lbl-class', 'col-sm-2');
 
                 return {
                     aaCol: colCls.col,
                     aaClass: colCls.cls,
                     aaFgClass: fgcls,
                     ngShow: ngshow,
-                    lblClass: lblClass,
+                    lblClass: lblColCls.cls,
+                    lblCol: lblColCls.col,
                     defaultWrapper: '<div class="form-group ' + fgcls + '" ' + ngshow + '><div class="' + colCls.cls + ' ' + colCls.col + '"><input/></div></div>'
                 };
             }
@@ -143,8 +145,8 @@
                     element.attr('aa-checkbox', '');
                     element.attr('type', 'checkbox');
 
-                    wrap(element, '<div class="form-group ' + attrs.aaFgClass + '" ' + attrs.ngShow + '><div class="' + attrs.lblClass + '"></div><div class="checkbox ' +
-                        attrs.aaClass + '"><input/></div></div>');
+                    wrap(element, '<div class="form-group ' + attrs.aaFgClass + '" ' + attrs.ngShow + '><div class="' + attrs.lblClass + ' ' + attrs.lblCol + '"></div><div class="checkbox ' +
+                        attrs.aaClass + ' ' + attrs.aaCol + '"><input/></div></div>');
                 };
             }
 
@@ -170,7 +172,7 @@
                     element.attr('ng-change', 'activate(opt, $event)');
                     element.attr('ng-value', 'opt.id');
 
-                    wrap(element, '<div class="form-group ' + attrs.aaFgClass + '" ' + attrs.ngShow + '><div class="radio-update ' + attrs.aaClass + '"><label class="radio-inline" ng-repeat="opt in ' + element.attr('options') + '">' +
+                    wrap(element, '<div class="form-group ' + attrs.aaFgClass + '" ' + attrs.ngShow + '><div class="radio-update ' + attrs.aaClass + ' ' + attrs.aaCol + '"><label class="radio-inline" ng-repeat="opt in ' + element.attr('options') + '">' +
                         '<input/></label></div></div>');
 
                     var firstSpan = ' <span ng-if="$first">{{opt.name}}</span>';
@@ -234,24 +236,6 @@
                         parent.appendChild(child);
                     }
                 }
-            }
-
-            function initSpinnerClickStrategies() {
-                aaFormExtensionsProvider.defaultSpinnerClickStrategy = "fwSpinnerClickStrategy";
-                aaFormExtensionsProvider.spinnerClickStrategies = {
-                    fwSpinnerClickStrategy: function (buttonElement) {
-
-                        var loading = angular.element('<i style="margin-left: 5px;" class="fa fa-spinner fa-spin"></i>');
-
-                        // This will be disabled after load is finished since it was happening too fast with the after method below.
-                        return {
-                            before: function () {
-                                buttonElement.prop("disabled", true);
-                                buttonElement.append(loading);
-                            }
-                        };
-                    }
-                };
             }
 
             this.$get = function aaCustomFactory() {
