@@ -13,6 +13,9 @@ All except for Select2 are based on [Angular UI Bootstrap](http://angular-ui.git
 ##Demo
 - Sample [Plunker](http://plnkr.co/edit/rLe4N3IIsvYQupFPHR24?p=preview)
 
+##Blog
+[6 Field Group Strategies for Angular Agility](http://www.intertech.com/Blog/6-field-group-strategies-angular-agility/)
+
 ##Usage
 ###app.js
 ```javascript
